@@ -3,6 +3,8 @@ package org.d3if3044.wanderlist.ui.screen
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,11 +17,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -28,7 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,6 +51,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okio.blackholeSink
 import org.d3if3044.wanderlist.R
 import org.d3if3044.wanderlist.database.NotesDb
 import org.d3if3044.wanderlist.model.Notes
@@ -69,12 +71,8 @@ fun MainScreen(navController: NavHostController) {
         topBar  = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.app_name))
+                    Text(text = stringResource(id = R.string.app_name), style = MaterialTheme.typography.displayLarge)
                 },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
                 actions = {
                     IconButton(onClick = {
                         CoroutineScope(Dispatchers.IO).launch {
@@ -100,7 +98,7 @@ fun MainScreen(navController: NavHostController) {
             FloatingActionButton(onClick = {
                 navController.navigate(Screen.FormBaru.route)
             }) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(id = R.string.tambah_mahasiswa), tint = MaterialTheme.colorScheme.primary)
+                Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(id = R.string.tambah_destinasi), tint = MaterialTheme.colorScheme.primary)
             }
         }
     ) { padding ->
@@ -135,27 +133,26 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
     } else {
         if (showList) {
             LazyColumn(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceDim),
                 contentPadding = PaddingValues(bottom = 84.dp)
             ) {
                 items(data) {
                     ListItem(notes = it) {
                         navController.navigate(Screen.FormUbah.withId(it.id))
                     }
-                    Divider()
                 }
             }
         }
         else {
             LazyVerticalStaggeredGrid(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceDim),
                 columns = StaggeredGridCells.Fixed(2),
                 verticalItemSpacing = 8.dp,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(8.dp, 8.dp, 8.dp, 84.dp)
             ) {
                 items(data) {
-                    GridItem(mahasiswa = it) {
+                    GridItem(notes = it) {
                         navController.navigate(Screen.FormUbah.withId(it.id))
                     }
                 }
@@ -171,22 +168,23 @@ fun ListItem(notes: Notes, onClick: () -> Unit){
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(16.dp),
+            .padding(16.dp)
+            .background(MaterialTheme.colorScheme.surfaceBright),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = notes.tujuan, maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
-        Text(text = notes.kendaraan, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        Text(text = notes.catatan)
+        Text(text = notes.tujuan, maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp))
+        Text(text = notes.kendaraan, modifier = Modifier.padding(start = 8.dp, end = 8.dp))
+        Text(text = notes.catatan, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp))
     }
 }
 @Composable
-fun GridItem(mahasiswa: Notes, onClick: () -> Unit) {
+fun GridItem(notes: Notes, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.surfaceBright,
         ),
         border = BorderStroke(1.dp, Color.Gray)
     ) {
@@ -194,9 +192,9 @@ fun GridItem(mahasiswa: Notes, onClick: () -> Unit) {
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = mahasiswa.tujuan, maxLines = 2, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
-            Text(text = mahasiswa.kendaraan, maxLines = 4, overflow = TextOverflow.Ellipsis)
-            Text(text = mahasiswa.catatan)
+            Text(text = notes.tujuan, maxLines = 2, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
+            Text(text = notes.kendaraan)
+            Text(text = notes.catatan, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
     }
 }

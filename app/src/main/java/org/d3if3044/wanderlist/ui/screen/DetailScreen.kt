@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -91,9 +90,9 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                 },
                 title = {
                     if (id == null)
-                        Text(text = stringResource(id = R.string.tambah_mahasiswa))
+                        Text(text = stringResource(id = R.string.tambah_destinasi))
                     else
-                        Text(text = stringResource(id = R.string.edit_mahasiswa))
+                        Text(text = stringResource(id = R.string.edit_tujuan_wisata))
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -134,31 +133,30 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
             )
         }
     ) { padding ->
-        FormMahasiswa(
-            name = tujuan,
-            onNameChange = { tujuan = it},
-            nim = kendaraan,
-            onNIMChange = { kendaraan = it },
-            kelas = catatan,
-            onClassChange = { catatan = it },
+        FormNotes(
+            tujuan = tujuan,
+            onDestChange = { tujuan = it},
+            kendaraan = kendaraan,
+            onTransportChange = { kendaraan = it },
+            catatan = catatan,
+            onDescChange = { catatan = it },
             modifier = Modifier.padding(padding)
         )
     }
 }
 
 @Composable
-fun FormMahasiswa(
-    name: String, onNameChange: (String) -> Unit,
-    nim: String, onNIMChange: (String) -> Unit,
-    kelas: String, onClassChange: (String) -> Unit,
+fun FormNotes(
+    tujuan: String, onDestChange: (String) -> Unit,
+    kendaraan: String, onTransportChange: (String) -> Unit,
+    catatan: String, onDescChange: (String) -> Unit,
     modifier: Modifier
 ) {
     val radioOptions = listOf(
-        stringResource(id = R.string.class_01),
-        stringResource(id = R.string.class_02),
-        stringResource(id = R.string.class_03),
-        stringResource(id = R.string.class_04),
-        stringResource(id = R.string.class_05)
+        stringResource(id = R.string.transport1),
+        stringResource(id = R.string.transport2),
+        stringResource(id = R.string.transport3),
+        stringResource(id = R.string.transport4)
     )
 
     Column(
@@ -168,22 +166,12 @@ fun FormMahasiswa(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextField(
-            value = name,
-            onValueChange = { onNameChange(it) },
-            label = { Text(text = stringResource(R.string.nama)) },
+            value = tujuan,
+            onValueChange = { onDestChange(it) },
+            label = { Text(text = stringResource(R.string.tujuan)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = nim,
-            onValueChange = { onNIMChange(it) },
-            label = { Text(text = stringResource(R.string.nim)) },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
             modifier = Modifier.fillMaxWidth()
@@ -196,19 +184,28 @@ fun FormMahasiswa(
             radioOptions.forEach { text ->
                 ClassOptions(
                     label = text,
-                    isSelected = kelas == text,
+                    isSelected = kendaraan == text,
                     modifier = Modifier
                         .selectable(
-                            selected = kelas == text,
-                            onClick = { onClassChange(text) },
+                            selected = kendaraan == text,
+                            onClick = { onTransportChange(text) },
                             role = Role.RadioButton
                         )
                         .padding(16.dp)
                         .fillMaxWidth()
                 )
             }
-
         }
+        OutlinedTextField(
+            value = catatan,
+            onValueChange = { onDescChange(it) },
+            label = { Text(text = stringResource(R.string.catatan)) },
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                imeAction = ImeAction.Done
+            ),
+            modifier = Modifier.fillMaxSize().padding(top = 6.dp, bottom = 8.dp)
+        )
     }
 }
 @Composable
