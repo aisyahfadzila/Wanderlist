@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -133,8 +134,10 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
     } else {
         if (showList) {
             LazyColumn(
-                modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceDim),
-                contentPadding = PaddingValues(bottom = 84.dp)
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surfaceDim),
+                contentPadding = PaddingValues(bottom = 84.dp, top = 16.dp)
             ) {
                 items(data) {
                     ListItem(notes = it) {
@@ -145,7 +148,9 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
         }
         else {
             LazyVerticalStaggeredGrid(
-                modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceDim),
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surfaceDim),
                 columns = StaggeredGridCells.Fixed(2),
                 verticalItemSpacing = 8.dp,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -164,37 +169,56 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
 
 @Composable
 fun ListItem(notes: Notes, onClick: () -> Unit){
-    Column(
+    Card (
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(16.dp)
-            .background(MaterialTheme.colorScheme.surfaceBright),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceBright,
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceBright)
     ) {
-        Text(text = notes.tujuan, maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp))
-        Text(text = notes.kendaraan, modifier = Modifier.padding(start = 8.dp, end = 8.dp))
-        Text(text = notes.catatan, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onClick() }
+                .padding(16.dp)
+                .background(MaterialTheme.colorScheme.surfaceBright),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = notes.tujuan, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.displayMedium)
+                Text(text = notes.kendaraan)
+            }
+
+            Text(text = notes.catatan, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.displaySmall)
+        }
     }
 }
+
 @Composable
 fun GridItem(notes: Notes, onClick: () -> Unit) {
     Card(
         modifier = Modifier
+            .padding(4.dp)
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceBright,
         ),
-        border = BorderStroke(1.dp, Color.Gray)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceBright)
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = notes.tujuan, maxLines = 2, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
+            Text(text = notes.tujuan, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.displayMedium)
             Text(text = notes.kendaraan)
-            Text(text = notes.catatan, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(text = notes.catatan, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.displaySmall)
         }
     }
 }

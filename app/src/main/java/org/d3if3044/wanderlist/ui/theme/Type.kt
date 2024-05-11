@@ -35,7 +35,7 @@ val Typography = Typography(
     ),
     displaySmall = TextStyle(
         fontFamily = Poppins,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Light,
         fontSize = 14.sp
     )
 )
