@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Wanderlist</string>
-    <string name="list_kosong">Belum ada data</string>
-    <string name="x_diklik">%1$s diklik!</string>
+    <string name="list_kosong">Belum ada destinasi \nyang ditambahkan</string>
+    <string name="empty_state_image">Gambar belum ada destinasi</string>
     <string name="tambah_mahasiswa">Tambah mahasiswa</string>
-    <string name="tambah_error">Belum bisa tambah mahasiswa.</string>
     <string name="kembali">Kembali</string>
     <string name="simpan">Simpan</string>
     <string name="edit_mahasiswa">Ubah Data Mahasiswa</string>
