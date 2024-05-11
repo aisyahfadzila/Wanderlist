@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Wanderlist</string>
+    <string name="list_kosong">Belum ada data</string>
+    <string name="x_diklik">%1$s diklik!</string>
+    <string name="tambah_mahasiswa">Tambah mahasiswa</string>
+    <string name="tambah_error">Belum bisa tambah mahasiswa.</string>
+    <string name="kembali">Kembali</string>
+    <string name="simpan">Simpan</string>
+    <string name="edit_mahasiswa">Ubah Data Mahasiswa</string>
+    <string name="nama">Nama</string>
+    <string name="nim">NIM</string>
+    <string name="kelas">Kelas</string>
+    <string name="class_01">D3IF-4601</string>
+    <string name="class_02">D3IF-4602</string>
+    <string name="class_03">D3IF-4603</string>
+    <string name="class_04">D3IF-4604</string>
+    <string name="class_05">D3IF-4605</string>
+    <string name="invalid">Nama, NIM, dan kelas tidak boleh kosong.</string>
+    <string name="lainnya">Opsi lainnya</string>
+    <string name="hapus">Hapus data mahasiswa</string>
+    <string name="pesan_hapus">Hapus data mahasiswa ini?</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="tombol_batal">Batal</string>
+    <string name="list">Tampilan List</string>
+    <string name="grid">Tampilan Grid</string>
 </resources>
